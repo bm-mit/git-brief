@@ -1,4 +1,6 @@
 using GitBrief.Utils.GitWrapper;
+using GitBrief.Views.Branch;
+using Terminal.Gui;
 
 namespace GitBrief.Commands.Branch;
 
@@ -18,5 +20,9 @@ public static class BranchCommands
                     ? $"{prefix}{b.FriendlyName} -> {GitBranch.GetFullRemoteName(b)}"
                     : $"{prefix}{b.FriendlyName}");
         }
+
+        Application.Init();
+        Application.Run<BranchListWindow>().Dispose();
+        Application.Shutdown();
     }
 }
