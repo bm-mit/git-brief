@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "git-brief", "git-brief.csproj", "{2E38E270-485C-4420-B2F5-51942C3FA15D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InteractiveConsole", "InteractiveConsole\InteractiveConsole.csproj", "{8275DF63-AE06-4FBF-8378-42344FEC72CF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{2E38E270-485C-4420-B2F5-51942C3FA15D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E38E270-485C-4420-B2F5-51942C3FA15D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E38E270-485C-4420-B2F5-51942C3FA15D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8275DF63-AE06-4FBF-8378-42344FEC72CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8275DF63-AE06-4FBF-8378-42344FEC72CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8275DF63-AE06-4FBF-8378-42344FEC72CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8275DF63-AE06-4FBF-8378-42344FEC72CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
