@@ -1,3 +1,13 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using CommandLine;
+using GitBrief.Commands.Graph;
+using GitBrief.Utils.ArgsParser;
 
-Console.WriteLine("Hello, World!");
+namespace GitBrief;
+
+internal abstract class Program
+{
+    private static void Main(string[] args)
+    {
+        ArgsParser.Parse(args);
+    }
+}
