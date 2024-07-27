@@ -9,26 +9,26 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Colorful.Console" Version="1.2.15" />
-      <PackageReference Include="CommandLineParser" Version="2.9.1" />
-      <PackageReference Include="JetBrains.Annotations" Version="2024.2.0" />
-      <PackageReference Include="LibGit2Sharp" Version="0.30.0" />
+        <PackageReference Include="Colorful.Console" Version="1.2.15"/>
+        <PackageReference Include="CommandLineParser" Version="2.9.1"/>
+        <PackageReference Include="JetBrains.Annotations" Version="2024.2.0"/>
+        <PackageReference Include="LibGit2Sharp" Version="0.30.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Remove="InteractiveConsole\**" />
+        <Compile Remove="InteractiveConsole\**"/>
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Remove="InteractiveConsole\**" />
+        <EmbeddedResource Remove="InteractiveConsole\**"/>
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="InteractiveConsole\**" />
+        <None Remove="InteractiveConsole\**"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="InteractiveConsole\InteractiveConsole.csproj" />
+        <ProjectReference Include="InteractiveConsole\InteractiveConsole.csproj"/>
     </ItemGroup>
 
 </Project>

@@ -1,6 +1,6 @@
-using GitBrief.Commands.Graph;
 using CommandLine;
 using GitBrief.Commands.Branch;
+using GitBrief.Commands.Graph;
 
 namespace GitBrief.Utils.ArgsParser;
 

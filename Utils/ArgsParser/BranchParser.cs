@@ -7,7 +7,7 @@ internal static class BranchParser
 {
     public static void Parse(BranchOptions options)
     {
-        string[] args = Environment.GetCommandLineArgs().Skip(2).ToArray();
+        var args = Environment.GetCommandLineArgs().Skip(2).ToArray();
         Parser.Default.ParseArguments<BranchOptions.ListOptions, BranchOptions.ListOptions>(args)
             .WithParsed<BranchOptions.ListOptions>(BranchCommands.List);
     }

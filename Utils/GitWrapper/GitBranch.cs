@@ -1,4 +1,3 @@
-using GitBrief.Commands.Branch;
 using LibGit2Sharp;
 
 namespace GitBrief.Utils.GitWrapper;
@@ -22,7 +21,7 @@ public static class GitBranch
 
     public static Branch[] List(string? directory)
     {
-        Branch[] branches = GetBranches(directory);
+        var branches = GetBranches(directory);
         SortBranchList(ref branches);
 
         return branches;
@@ -30,7 +29,7 @@ public static class GitBranch
 
     public static Branch[] ListLocalBranches(string? directory)
     {
-        Branch[] branches = GetBranches(directory, branch => !branch.IsRemote);
+        var branches = GetBranches(directory, branch => !branch.IsRemote);
         SortBranchList(ref branches);
 
         return branches;
@@ -38,8 +37,8 @@ public static class GitBranch
 
     public static string GetFullRemoteName(Branch branch)
     {
-        string remoteName = branch.RemoteName;
-        string remoteBranchName = branch.CanonicalName.Replace("refs/heads", remoteName);
+        var remoteName = branch.RemoteName;
+        var remoteBranchName = branch.CanonicalName.Replace("refs/heads", remoteName);
 
         return remoteBranchName;
     }
