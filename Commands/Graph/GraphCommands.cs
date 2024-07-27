@@ -4,6 +4,6 @@ public static class GraphCommands
 {
     public static void Generate()
     {
-        Console.Write("graph generate");
+        throw new NotImplementedException();
     }
 }
