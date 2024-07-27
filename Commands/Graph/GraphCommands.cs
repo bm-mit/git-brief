@@ -1,6 +1,6 @@
 namespace GitBrief.Commands.Graph;
 
-public static class GraphGenerator
+public static class GraphCommands
 {
     public static void Generate()
     {
