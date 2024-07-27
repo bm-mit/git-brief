@@ -5,13 +5,33 @@ namespace GitBrief.Utils.GitWrapper;
 
 public static class GitBranch
 {
-    public static Branch[] List(string? directory)
+    private static void SortBranchList(ref Branch[] branches)
     {
-        var repo = GitRepo.Init(directory);
-        Branch[] branches = repo.Branches.ToArray();
         Array.Sort(branches,
             (branch1, branch2) => branch1.IsRemote == branch2.IsRemote ? 0 :
                 branch1.IsRemote ? -1 : 1);
+    }
+
+    private static Branch[] GetBranches(string? directory, Func<Branch, bool>? filter = null)
+    {
+        filter ??= _ => true;
+        var repo = GitRepo.Init(directory);
+
+        return repo.Branches.Where(filter).ToArray();
+    }
+
+    public static Branch[] List(string? directory)
+    {
+        Branch[] branches = GetBranches(directory);
+        SortBranchList(ref branches);
+
+        return branches;
+    }
+
+    public static Branch[] ListLocalBranches(string? directory)
+    {
+        Branch[] branches = GetBranches(directory, branch => !branch.IsRemote);
+        SortBranchList(ref branches);
 
         return branches;
     }

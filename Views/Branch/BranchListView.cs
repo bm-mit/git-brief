@@ -1,12 +1,23 @@
-using System.Data;
-using Terminal.Gui;
+using GitBrief.Utils.GitWrapper;
+using LibGit2Sharp;
+using Spectre.Console;
 
-namespace GitBrief.Views.Branch;
-
-public class BranchListView : TableView
+public static class BranchListView
 {
-    public BranchListView()
+    static string BranchToOptionString(Branch branch)
     {
-        Table = new DataTableSource(new DataTable());
+        return branch.IsTracking
+            ? $"{branch.FriendlyName} -> {GitBranch.GetFullRemoteName(branch)}"
+            : $"{branch.FriendlyName}";
+    }
+
+    public static Branch Show(Branch[] branches)
+    {
+        SelectionPrompt<Branch> prompt = new();
+        prompt.Title("Switch branch: ");
+        prompt.AddChoices(branches);
+        prompt.Converter = BranchToOptionString;
+
+        return AnsiConsole.Prompt(prompt);
     }
 }
