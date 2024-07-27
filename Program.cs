@@ -1,3 +1,21 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using CommandLine;
+using GitBrief.Commands.Graph;
+using GitBrief.Utils.ArgsParser;
 
-Console.WriteLine("Hello, World!");
+namespace GitBrief;
+
+internal abstract class Program
+{
+    private static void Main(string[] args)
+    {
+        var result = Parser.Default.ParseArguments<Options>(args)
+            .WithParsed(options =>
+            {
+                if (options.Graph)
+                    GraphGenerator.Generate();
+                else
+                    Console.WriteLine("No command provided!");
+            })
+            .WithNotParsed(_ => Console.Write("Error"));
+    }
+}
