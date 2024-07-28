@@ -6,10 +6,10 @@ public class SelectionPrompt<T> where T: notnull
     private ConsoleColor ForegroundColor { get; init; } = Console.ForegroundColor;
     private ConsoleColor HighlightColor { get; init; } = ConsoleColor.Blue;
     private ConsoleColor TitleColor { get; init; } = ConsoleColor.Red;
-    private string Title { get; init; }
+    private string Title { get; init; } = "";
     private T[] Items { get; init; } = [];
     private List<string> ConvertedItems { get; init; } = [];
-    private int SelectionIndex { get; set; } = 0;
+    private int SelectionIndex { get; set; }
     private (int, int) PromptPosition { get; set; }
 
     public SelectionPrompt(
@@ -21,7 +21,7 @@ public class SelectionPrompt<T> where T: notnull
         HighlightColor = highlightColor ?? HighlightColor;
         TitleColor = titleColor ?? TitleColor;
         Items = items ?? Items;
-        Convert = convert ?? convert;
+        Convert = convert ?? Convert;
     }
 
     private void MoveUp()
@@ -44,8 +44,8 @@ public class SelectionPrompt<T> where T: notnull
 
     private void ItemsToString()
     {
-        for (int i = 0; i < Items.Length; ++i)
-            ConvertedItems.Add(Convert(Items[i]));
+        foreach (var items in Items)
+            ConvertedItems.Add(Convert(items));
     }
 
     private void HandleKeyPress(ConsoleKey key)

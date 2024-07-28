@@ -9,8 +9,7 @@ public static class BranchCommands
     {
         new SelectionPrompt<LibGit2Sharp.Branch>(
             items: GitBranch.ListLocalBranches(options.Path),
-            converter:
-            branch =>
+            convert: branch =>
                 $"{branch.FriendlyName} -> {branch.CanonicalName.Replace("refs/head", branch.RemoteName)}"
         ).Show();
     }
