@@ -2,7 +2,7 @@ namespace InteractiveConsole;
 
 public class SelectionPrompt<T> where T : notnull
 {
-    private Func<T, string> Convert { get; init; } = item => item.ToString() ?? "";
+    private Converter<T, string> Convert { get; init; } = item => item.ToString() ?? "";
     private ConsoleColor ForegroundColor { get; init; } = Console.ForegroundColor;
     private ConsoleColor HighlightColor { get; init; } = ConsoleColor.Blue;
     private ConsoleColor TitleColor { get; init; } = ConsoleColor.Red;
@@ -27,7 +27,7 @@ public class SelectionPrompt<T> where T : notnull
 
     public SelectionPrompt(
         string? title = null, ConsoleColor? foregroundColor = null, ConsoleColor? highlightColor = null,
-        ConsoleColor? titleColor = null, T[]? items = null, Func<T, string>? convert = null)
+        ConsoleColor? titleColor = null, T[]? items = null, Converter<T, string>? convert = null)
     {
         Title = title;
         ForegroundColor = foregroundColor ?? ForegroundColor;
