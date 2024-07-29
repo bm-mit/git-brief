@@ -11,17 +11,15 @@ public static class GitBranch
                 branch1.IsRemote ? -1 : 1);
     }
 
-    private static Branch[] GetBranches(string? directory, Func<Branch, bool>? filter = null)
+    private static Branch[] GetBranches(Repository repo, Func<Branch, bool>? filter = null)
     {
         filter ??= _ => true;
-        var repo = GitRepo.Init(directory);
-
         return repo.Branches.Where(filter).ToArray();
     }
 
-    public static Branch[] List(string? directory)
+    public static Branch[] List(Repository repo)
     {
-        var branches = GetBranches(directory);
+        var branches = GetBranches(repo);
         SortBranchList(ref branches);
 
         return branches;
@@ -44,9 +42,9 @@ public static class GitBranch
         }
     }
 
-    public static Branch[] ListLocalBranches(string? directory)
+    public static Branch[] ListLocalBranches(Repository repo)
     {
-        var branches = GetBranches(directory, branch => !branch.IsRemote);
+        var branches = GetBranches(repo, branch => !branch.IsRemote);
         SortBranchList(ref branches);
 
         return branches;
@@ -60,15 +58,13 @@ public static class GitBranch
         return remoteBranchName;
     }
 
-    public static Branch GetCurrentBranch(string? directory)
+    public static Branch GetCurrentBranch(Repository repo)
     {
-        var repo = GitRepo.Init(directory);
-
         return repo.Head;
     }
 
-    public static bool IsCurrentBranch(Branch b, string? directory)
+    public static bool IsCurrentBranch(Branch b, Repository repo)
     {
-        return b.FriendlyName == GetCurrentBranch(directory).FriendlyName;
+        return b.FriendlyName == GetCurrentBranch(repo).FriendlyName;
     }
 }

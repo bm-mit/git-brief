@@ -11,8 +11,8 @@ public interface ISelectionPrompt<T>
     public int SelectionIndex { get; }
     public (int, int)? BaseCursorPosition { get; }
     public (int, int)? BaseSelectionCursorPosition { get; }
-    public char HighlightChar { get; }
-    public char UnhighlightChar { get; }
+    public string HighlightPrefix { get; }
+    public string UnhighlightPrefix { get; }
 
     public T? Show();
 }

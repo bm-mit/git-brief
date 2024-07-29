@@ -24,8 +24,8 @@ public class SelectionPrompt<T> : ISelectionPrompt<T> where T : notnull
     public SelectionItemCollection<T> Items { get; init; }
     public (int, int)? BaseCursorPosition { get; private set; }
     public (int, int)? BaseSelectionCursorPosition { get; private set; }
-    public char HighlightChar { get; } = '>';
-    public char UnhighlightChar { get; } = ' ';
+    public string HighlightPrefix { get; } = "> ";
+    public string UnhighlightPrefix { get; } = "  ";
 
     public int SelectionIndex
     {
@@ -84,9 +84,9 @@ public class SelectionPrompt<T> : ISelectionPrompt<T> where T : notnull
             Items[i].CursorPosition = Console.GetCursorPosition();
 
             if (i == SelectionIndex)
-                WriteItem($"{HighlightChar} {item}", HighlightColor);
+                WriteItem($"{HighlightPrefix}{item}", HighlightColor);
             else
-                WriteItem($"{UnhighlightChar} {item}", ForegroundColor);
+                WriteItem($"{UnhighlightPrefix}{item}", ForegroundColor);
         }
     }
 
@@ -109,12 +109,12 @@ public class SelectionPrompt<T> : ISelectionPrompt<T> where T : notnull
 
     private void UnhighlightItem(int index)
     {
-        RewriteItem(index, $"{UnhighlightChar} {Items[index].RepresentString}", ForegroundColor);
+        RewriteItem(index, $"{UnhighlightPrefix}{Items[index].RepresentString}", ForegroundColor);
     }
 
     private void HighlightItem(int index)
     {
-        RewriteItem(index, $"{HighlightChar} {Items[index].RepresentString}", HighlightColor);
+        RewriteItem(index, $"{UnhighlightPrefix}{Items[index].RepresentString}", HighlightColor);
     }
 
     private static SelectionPromptAction HandleKeyPress(ConsoleKey key)
