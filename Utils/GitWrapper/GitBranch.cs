@@ -27,6 +27,23 @@ public static class GitBranch
         return branches;
     }
 
+    public static void Checkout(string? directory, Branch? toBranch)
+    {
+        if (toBranch == null)
+            return;
+
+        var repo = GitRepo.Init(directory);
+
+        try
+        {
+            LibGit2Sharp.Commands.Checkout(repo, toBranch);
+        }
+        catch (CheckoutConflictException e)
+        {
+            Console.WriteLine($"ERROR: {e.Message}");
+        }
+    }
+
     public static Branch[] ListLocalBranches(string? directory)
     {
         var branches = GetBranches(directory, branch => !branch.IsRemote);

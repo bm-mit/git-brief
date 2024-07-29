@@ -72,7 +72,6 @@ public class SelectionPrompt<T> : ISelectionPrompt<T> where T : notnull
         if (Title == null) return;
 
         WriteItem(Title, TitleColor);
-        Console.WriteLine();
     }
 
     private void RenderItem()
