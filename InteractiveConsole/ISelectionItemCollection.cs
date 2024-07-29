@@ -1,6 +1,10 @@
+using System.Collections;
+
 namespace InteractiveConsole;
 
-public interface ISelectionItemCollection<out T> : IEnumerable<T> where T : notnull
+public interface ISelectionItemCollection<T> : IEnumerable<ISelectionItem<T>> where T : notnull
 {
-    void Render();
+    public List<SelectionItem<T>> Items { get; init; }
+    public int SelectionIndex { get; }
+    public int Length { get; }
 }

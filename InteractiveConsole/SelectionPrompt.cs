@@ -1,29 +1,27 @@
 namespace InteractiveConsole;
 
-public class SelectionPrompt<T> where T : notnull
+public class SelectionPrompt<T> : ISelectionPrompt<T> where T : notnull
 {
-    private Converter<T, string> Convert { get; init; } = item => item.ToString() ?? "";
-    private ConsoleColor ForegroundColor { get; init; } = Console.ForegroundColor;
-    private ConsoleColor HighlightColor { get; init; } = ConsoleColor.Blue;
-    private ConsoleColor TitleColor { get; init; } = ConsoleColor.Red;
-    private string? Title { get; init; }
-    private T[] Items { get; init; } = [];
-    private List<string> ConvertedItems { get; init; } = [];
+    public Converter<T, string> Convert { get; init; } = item => item.ToString() ?? "";
+    public ConsoleColor ForegroundColor { get; init; } = Console.ForegroundColor;
+    public ConsoleColor HighlightColor { get; init; } = ConsoleColor.Blue;
+    public ConsoleColor TitleColor { get; init; } = ConsoleColor.Red;
+    public string? Title { get; init; }
+    public SelectionItemCollection<T> Items { get; init; }
+    public List<string> ConvertedItems { get; init; } = [];
+    public (int, int)? BaseCursorPosition { get; private set; }
+    public (int, int)? BaseSelectionCursorPosition { get; private set; }
 
     private int _selectionIndex;
-
-    private int SelectionIndex
+    public int SelectionIndex
     {
         get => _selectionIndex;
-        set
+        private set
         {
             _selectionIndex = value;
             Rerender();
         }
     }
-
-    private (int, int) BasePromptPosition { get; set; }
-    private (int, int) SelectionAreaPosition { get; set; }
 
     public SelectionPrompt(
         string? title = null, ConsoleColor? foregroundColor = null, ConsoleColor? highlightColor = null,
@@ -33,7 +31,7 @@ public class SelectionPrompt<T> where T : notnull
         ForegroundColor = foregroundColor ?? ForegroundColor;
         HighlightColor = highlightColor ?? HighlightColor;
         TitleColor = titleColor ?? TitleColor;
-        Items = items ?? Items;
+        Items = new SelectionItemCollection<T>(items) ?? Items;
         Convert = convert ?? Convert;
     }
 
@@ -55,12 +53,6 @@ public class SelectionPrompt<T> where T : notnull
 
     private void Cancel()
     {
-    }
-
-    private void ItemsToString()
-    {
-        foreach (var items in Items)
-            ConvertedItems.Add(Convert(items));
     }
 
     private void HandleKeyPress(ConsoleKey key)
@@ -91,7 +83,9 @@ public class SelectionPrompt<T> where T : notnull
 
     private void Render()
     {
-        Console.SetCursorPosition(SelectionAreaPosition.Item1, SelectionAreaPosition.Item2);
+        BaseSelectionCursorPosition ??= Console.GetCursorPosition();
+        Console.SetCursorPosition(BaseSelectionCursorPosition.Value.Item1, BaseSelectionCursorPosition.Value.Item2);
+
         const char selectIcon = '>';
         const char unselectIcon = ' ';
 
@@ -116,7 +110,7 @@ public class SelectionPrompt<T> where T : notnull
 
     public T? Show()
     {
-        BasePromptPosition = Console.GetCursorPosition();
+        BaseCursorPosition = Console.GetCursorPosition();
         if (Title != null)
         {
             Console.ForegroundColor = TitleColor;
@@ -124,8 +118,6 @@ public class SelectionPrompt<T> where T : notnull
             Console.ResetColor();
         }
 
-        SelectionAreaPosition = Console.GetCursorPosition();
-        ItemsToString();
         Render();
 
         Console.WriteLine();
