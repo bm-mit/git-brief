@@ -2,10 +2,6 @@ namespace InteractiveConsole;
 
 public class SelectionItem<T> : ISelectionItem<T> where T : notnull
 {
-    public (int, int)? CursorPosition { get; internal set; }
-    public T Item { get; init; }
-    public string RepresentString { get; init; }
-
     public SelectionItem(T item, string? representString)
     {
         Item = item;
@@ -18,6 +14,10 @@ public class SelectionItem<T> : ISelectionItem<T> where T : notnull
         )
     {
     }
+
+    public (int, int)? CursorPosition { get; internal set; }
+    public T Item { get; init; }
+    public string RepresentString { get; init; }
 
     public void Render(ConsoleColor color)
     {

@@ -5,16 +5,17 @@ namespace InteractiveConsole;
 public class SelectionItemCollection<T> : ISelectionItemCollection<T>
     where T : notnull
 {
-    public SelectionItem<T>[] Items { get; init; }
-    public int SelectionIndex { get; private set; } = 0;
-    public int Length => Items.Length;
-
     public SelectionItemCollection(T[] items, Converter<T, string>? converter = null)
     {
         Items = new SelectionItem<T>[items.Length];
-        for (int i = 0; i < items.Length; ++i)
+        for (var i = 0; i < items.Length; ++i)
             Items[i] = new SelectionItem<T>(items[i], converter);
     }
+
+    public SelectionItem<T> this[int index] => Items[index];
+    public SelectionItem<T>[] Items { get; init; }
+    public int SelectionIndex { get; } = 0;
+    public int Length => Items.Length;
 
     public IEnumerator<ISelectionItem<T>> GetEnumerator()
     {
@@ -25,6 +26,4 @@ public class SelectionItemCollection<T> : ISelectionItemCollection<T>
     {
         return GetEnumerator();
     }
-    
-    public SelectionItem<T> this[int index] => Items[index];
 }

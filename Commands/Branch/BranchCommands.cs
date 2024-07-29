@@ -10,8 +10,10 @@ public static class BranchCommands
         new SelectionPrompt<LibGit2Sharp.Branch>(
             items: GitBranch.ListLocalBranches(options.Path),
             title: "Switch branch: ",
-            convert: branch =>
-                $"{branch.FriendlyName} -> {branch.CanonicalName.Replace("refs/head", branch.RemoteName)}"
+            converter: branch =>
+                branch.RemoteName != null ? 
+                $"{branch.FriendlyName} -> {branch.CanonicalName.Replace("refs/heads", branch.RemoteName)}":
+                branch.FriendlyName
         ).Show();
     }
 }

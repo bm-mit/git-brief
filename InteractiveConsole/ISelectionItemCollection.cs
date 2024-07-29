@@ -1,5 +1,3 @@
-using System.Collections;
-
 namespace InteractiveConsole;
 
 public interface ISelectionItemCollection<T> : IEnumerable<ISelectionItem<T>> where T : notnull
