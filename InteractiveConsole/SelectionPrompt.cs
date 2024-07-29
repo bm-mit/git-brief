@@ -8,18 +8,21 @@ public class SelectionPrompt<T> : ISelectionPrompt<T> where T : notnull
     public ConsoleColor TitleColor { get; init; } = ConsoleColor.Red;
     public string? Title { get; init; }
     public SelectionItemCollection<T> Items { get; init; }
-    public List<string> ConvertedItems { get; init; } = [];
     public (int, int)? BaseCursorPosition { get; private set; }
     public (int, int)? BaseSelectionCursorPosition { get; private set; }
+    public char HighlightChar { get; private set; } = '>';
+    public char UnhighlightChar { get; private set; } = ' ';
 
     private int _selectionIndex;
+
     public int SelectionIndex
     {
         get => _selectionIndex;
         private set
         {
+            UnhighlightItem(_selectionIndex);
             _selectionIndex = value;
-            Rerender();
+            HighlightItem(_selectionIndex);
         }
     }
 
@@ -38,13 +41,11 @@ public class SelectionPrompt<T> : ISelectionPrompt<T> where T : notnull
     private void MoveUp()
     {
         SelectionIndex = ((SelectionIndex - 1) % Items.Length + Items.Length) % Items.Length;
-        Rerender();
     }
 
     private void MoveDown()
     {
         SelectionIndex = ((SelectionIndex + 1) % Items.Length + Items.Length) % Items.Length;
-        Rerender();
     }
 
     private void Select()
@@ -76,9 +77,11 @@ public class SelectionPrompt<T> : ISelectionPrompt<T> where T : notnull
         }
     }
 
-    private void Rerender()
+    private static void WriteItem(string representString, ConsoleColor color)
     {
-        Render();
+        Console.ForegroundColor = color;
+        Console.WriteLine(representString);
+        Console.ResetColor();
     }
 
     private void Render()
@@ -86,26 +89,49 @@ public class SelectionPrompt<T> : ISelectionPrompt<T> where T : notnull
         BaseSelectionCursorPosition ??= Console.GetCursorPosition();
         Console.SetCursorPosition(BaseSelectionCursorPosition.Value.Item1, BaseSelectionCursorPosition.Value.Item2);
 
-        const char selectIcon = '>';
-        const char unselectIcon = ' ';
-
         for (int i = 0; i < Items.Length; ++i)
         {
-            string item = ConvertedItems[i];
+            string item = Items[i].RepresentString;
+            Items[i].CursorPosition = Console.GetCursorPosition();
 
             if (i == SelectionIndex)
-            {
-                Console.ForegroundColor = HighlightColor;
-                Console.WriteLine($"{selectIcon} {item}");
-            }
+                WriteItem($"{HighlightChar} {item}", HighlightColor);
             else
-            {
-                Console.ForegroundColor = ForegroundColor;
-                Console.WriteLine($"{unselectIcon} {item}");
-            }
-
-            Console.ResetColor();
+                WriteItem($"{UnhighlightChar} {item}", ForegroundColor);
         }
+    }
+
+    private void RewriteItem(int index, string representString, ConsoleColor color)
+    {
+        SelectionItem<T> item = Items[index];
+        (int, int) lastCursorPos = Console.GetCursorPosition();
+        (int, int) itemCursorPos = ((int, int))Items[index].CursorPosition!;
+
+        Console.SetCursorPosition(itemCursorPos.Item1, itemCursorPos.Item2);
+        WriteItem($"{representString}", color);
+        Console.SetCursorPosition(lastCursorPos.Item1, lastCursorPos.Item2);
+    }
+
+    private void UnhighlightItem(int index)
+    {
+        RewriteItem(index, $"{UnhighlightChar} {Items[index].RepresentString}", ForegroundColor);
+    }
+
+    private void HighlightItem(int index)
+    {
+        RewriteItem(index, $"{HighlightChar} {Items[index].RepresentString}", HighlightColor);
+    }
+
+    private T? MainLoop()
+    {
+        Console.WriteLine();
+        do
+        {
+            ConsoleKey keyPressed = Console.ReadKey(true).Key;
+            HandleKeyPress(keyPressed);
+        } while (Console.ReadKey(true).Key != ConsoleKey.Escape);
+
+        return default;
     }
 
     public T? Show()
@@ -120,13 +146,6 @@ public class SelectionPrompt<T> : ISelectionPrompt<T> where T : notnull
 
         Render();
 
-        Console.WriteLine();
-        do
-        {
-            ConsoleKey keyPressed = Console.ReadKey(true).Key;
-            HandleKeyPress(keyPressed);
-        } while (Console.ReadKey(true).Key != ConsoleKey.Escape);
-
-        return default;
+        return MainLoop();
     }
 }

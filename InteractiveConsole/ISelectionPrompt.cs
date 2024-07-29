@@ -8,8 +8,11 @@ public interface ISelectionPrompt<T>
     public ConsoleColor TitleColor { get; init; }
     public string? Title { get; init; }
     public SelectionItemCollection<T> Items { get; init; }
-    public List<string> ConvertedItems { get; init; }
     public int SelectionIndex { get; }
     public (int, int)? BaseCursorPosition { get; }
     public (int, int)? BaseSelectionCursorPosition { get; }
+    public char HighlightChar { get; }
+    public char UnhighlightChar { get; }
+
+    public T? Show();
 }

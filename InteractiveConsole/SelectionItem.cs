@@ -2,7 +2,7 @@ namespace InteractiveConsole;
 
 public class SelectionItem<T> : ISelectionItem<T> where T : notnull
 {
-    public (int, int)? CursorPosition { get; private set; }
+    public (int, int)? CursorPosition { get; internal set; }
     public T Item { get; init; }
     public string RepresentString { get; init; }
 
